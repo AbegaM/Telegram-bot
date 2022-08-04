@@ -1,6 +1,7 @@
 const { Telegraf, session, Scenes } = require("telegraf");
 const { Keyboard } = require("telegram-keyboard");
 const { userRegistrationScene, testScene } = require("./scene");
+const express = require("express");
 require("dotenv").config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -30,6 +31,8 @@ bot.use(session());
 bot.use(stage.middleware());
 bot.launch();
 
-// Enable graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+const app = express();
+app.use(express.json());
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
